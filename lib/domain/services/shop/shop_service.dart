@@ -2,7 +2,7 @@ import 'package:shopper/data/database/shop/product_db.dart';
 import 'package:shopper/data/models/shop/product.dart';
 import 'package:shopper/data/network/shop/product_api.dart';
 import 'package:shopper/data/repositories/shop/product_repository.dart';
-import 'package:shopper/providers/auth_provider.dart';
+import 'package:shopper/domain/providers/auth_provider.dart';
 
 class ShopService {
   static final ShopService _instance = ShopService._internal();

@@ -6,9 +6,9 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shopper/data/preferences/preferences_key.dart';
-import 'package:shopper/domain/auth/services/auth_service.dart';
+import 'package:shopper/domain/services/auth/auth_service.dart';
 import 'package:shopper/presentation/main/views/main_view.dart';
-import 'package:shopper/providers/auth_provider.dart';
+import 'package:shopper/domain/providers/auth_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

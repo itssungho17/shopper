@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shopper/data/models/shop/product.dart';
-import 'package:shopper/domain/shop/services/shop_service.dart';
+import 'package:shopper/domain/services/shop/shop_service.dart';
 
 class ShopViewModel {
 

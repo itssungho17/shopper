@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:shopper/data/models/shop/product.dart';
 import 'package:shopper/presentation/shop/viewmodels/shop_viewmodel.dart';
 import 'package:shopper/presentation/shop/views/shop_detail_view.dart';
-import 'package:shopper/providers/auth_provider.dart';
+import 'package:shopper/domain/providers/auth_provider.dart';
 
 class ShopView extends StatefulWidget {
   const ShopView({super.key});

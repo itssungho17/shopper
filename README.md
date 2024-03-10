@@ -16,7 +16,8 @@ User input -> View -> Viewmodel -> Service -> Repository -> Data Provider -> SQL
 
 ### Domain layer
 - services (business logic)
+- providers (shared instances)
 
 ### Presentation layer
-- viewmodels
+- viewmodels (ChangeNotifier or ValueNotifier)
 - views

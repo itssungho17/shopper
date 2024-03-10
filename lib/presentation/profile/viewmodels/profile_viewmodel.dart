@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shopper/data/models/auth/user.dart';
-import 'package:shopper/domain/auth/services/auth_service.dart';
+import 'package:shopper/domain/services/auth/auth_service.dart';
 
 class ProfileViewModel {
 

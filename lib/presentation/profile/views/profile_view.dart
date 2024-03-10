@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shopper/data/models/auth/user.dart';
 import 'package:shopper/presentation/profile/viewmodels/profile_viewmodel.dart';
-import 'package:shopper/providers/auth_provider.dart';
+import 'package:shopper/domain/providers/auth_provider.dart';
 
 class ProfileView extends StatefulWidget {
   const ProfileView({super.key});

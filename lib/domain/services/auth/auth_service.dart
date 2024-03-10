@@ -2,7 +2,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shopper/data/models/auth/user.dart';
 import 'package:shopper/data/preferences/preferences_key.dart';
 import 'package:shopper/data/repositories/auth/auth_repository.dart';
-import 'package:shopper/providers/auth_provider.dart';
+import 'package:shopper/domain/providers/auth_provider.dart';
 
 class AuthService {
   static final AuthService _instance = AuthService._internal();
