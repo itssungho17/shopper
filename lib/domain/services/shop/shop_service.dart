@@ -31,6 +31,14 @@ class ShopService {
     return _repository;
   }
 
+  Future<Product> addProduct(Product item) async {
+    return await repository.addOne(item);
+  }
+  
+  Future<Product> deleteProduct(Product item) async {
+    return await repository.deleteOne(item);
+  }
+
   Future<List<Product>> getProducts() async {
     return await repository.getAll();
   }
@@ -38,4 +46,9 @@ class ShopService {
   Future<Product> getProductById(int id) async {
     return await repository.getOne(id);
   }
+
+  Future<Product> updateProduct(Product item) async {
+    return await repository.updateOne(item);
+  }
+  
 }
