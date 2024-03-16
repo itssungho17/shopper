@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:shopper/data/models/shop/product.dart';
 import 'package:shopper/presentation/shop/viewmodels/shop_detail_viewmodel.dart';
 import 'package:shopper/presentation/shop/views/shop_detail_image_view.dart';
 
 class ShopDetailView extends StatefulWidget {
-  final int id;
+  final Product product;
 
-  const ShopDetailView({required this.id, super.key});
+  const ShopDetailView({required this.product, super.key});
 
   @override
   State<ShopDetailView> createState() => _ShopDetailViewState();
@@ -18,10 +19,9 @@ class _ShopDetailViewState extends State<ShopDetailView> {
   @override
   void initState() {
     _vm = ShopDetailViewModel();
-    _id = widget.id;
-
+    _id = widget.product.id;
+    _vm.product.value = widget.product;
     super.initState();
-    startFetching();
   }
 
   void startFetching() {

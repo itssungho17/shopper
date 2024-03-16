@@ -21,7 +21,6 @@ class _ShopViewState extends State<ShopView> {
   void initState() {
     _vm = ShopViewModel();
     super.initState();
-    _vm.getProducts();
   }
 
   @override
@@ -29,48 +28,52 @@ class _ShopViewState extends State<ShopView> {
     final user = context.watch<AuthProvider>().user;
     _vm.getProducts();
 
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.black54,
-        title: const Text('상점'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.grid_view),
-            onPressed: () {
-              setState(() {
-                _isGrid = true;
-              });
-            },
-          ),
-          IconButton(
-            icon: const Icon(Icons.list),
-            onPressed: () {
-              setState(() {
-                _isGrid = false;
-              });
-            },
-          ),
-        ],
-      ),
-      backgroundColor: Colors.black38,
-      body: Stack(children: [
-        ValueListenableBuilder(
-          valueListenable: _vm.products,
-          builder: ((context, products, child) {
-            return RefreshIndicator(
-                color: Colors.cyan,
-                backgroundColor: Colors.black54,
-                onRefresh: () async {
-                  _vm.getProducts();
-                },
-                child: _isGrid
-                    ? _buildGridView(products)
-                    : _buildListView(products));
-          }),
-        ),
-        Visibility(visible: user == null, child: _buildWarningMsg(context)),
-      ]),
-    );
+    return ChangeNotifierProvider(
+        create: (context) => _vm,
+        child: Selector<ShopViewModel, List<Product>>(
+          selector: (context, vm) => vm.products,
+          builder: (context, products, child) {
+            return Scaffold(
+            appBar: AppBar(
+              backgroundColor: Colors.black54,
+              title: const Text('상점'),
+              actions: [
+                IconButton(
+                  icon: const Icon(Icons.grid_view),
+                  onPressed: () {
+                    setState(() {
+                      _isGrid = true;
+                    });
+                  },
+                ),
+                IconButton(
+                  icon: const Icon(Icons.list),
+                  onPressed: () {
+                    setState(() {
+                      _isGrid = false;
+                    });
+                  },
+                ),
+              ],
+            ),
+            backgroundColor: Colors.black38,
+            body: Stack(children: [
+              RefreshIndicator(
+                  color: Colors.cyan,
+                  backgroundColor: Colors.black54,
+                  onRefresh: () async {
+                    _vm.getProducts();
+                  },
+                  child: _isGrid
+                      ? _buildGridView(products)
+                      : _buildListView(products)),
+              Visibility(
+                  visible: user == null, child: _buildWarningMsg(context)),
+            ]),
+          );
+          },
+        )
+        );
   }
 
   GridView _buildGridView(List<Product> products) {
@@ -93,7 +96,7 @@ class _ShopViewState extends State<ShopView> {
               ),
               child: Image.network(products[index].images[0]),
             ),
-            onPressed: () => onTap(context, products[index].id),
+            onPressed: () => onTap(context, products[index]),
           );
         }));
   }
@@ -108,15 +111,15 @@ class _ShopViewState extends State<ShopView> {
             subtitle: Text(products[index].brand),
             leading:
                 Image.network(products[index].images[0], width: 60, height: 60),
-            onTap: () => onTap(context, products[index].id));
+            onTap: () => onTap(context, products[index]));
       },
     );
   }
 
-  void onTap(BuildContext context, int id) {
+  void onTap(BuildContext context, Product product) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => ShopDetailView(id: id)),
+      MaterialPageRoute(builder: (context) => ShopDetailView(product: product)),
     );
   }
 

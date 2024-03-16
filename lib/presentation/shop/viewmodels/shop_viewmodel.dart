@@ -2,26 +2,28 @@ import 'package:flutter/material.dart';
 import 'package:shopper/data/models/shop/product.dart';
 import 'package:shopper/domain/services/shop/shop_service.dart';
 
-class ShopViewModel {
+class ShopViewModel with ChangeNotifier {
 
   final _service = ShopService();
 
-  final isLoading = ValueNotifier<bool>(false);
-  final products = ValueNotifier<List<Product>>([]);
-  final error = ValueNotifier<String>('');
+  bool isLoading = false;
+  List<Product> products = List<Product>.empty(growable: true);
+  String error = '';
 
   void getProducts() {
-    isLoading.value = true;
+    isLoading = true;
+    notifyListeners();
 
     _service.getProducts()
       .then((value) {
-        products.value = value;
+        products = value;
       })
       .catchError((e) {
-        error.value = e.toString();
+        error = e.toString();
       })
       .whenComplete((){
-        isLoading.value = false;
+        isLoading = false;
+        notifyListeners();
       });
   }
 }
