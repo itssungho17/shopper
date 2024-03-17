@@ -1,79 +1,58 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shopper/data/models/shop/product.dart';
 import 'package:shopper/presentation/shop/viewmodels/shop_viewmodel.dart';
 import 'package:shopper/presentation/shop/views/shop_detail_view.dart';
 import 'package:shopper/domain/providers/auth_provider.dart';
 
-class ShopView extends StatefulWidget {
+class ShopView extends ConsumerStatefulWidget {
   const ShopView({super.key});
 
   @override
-  State<ShopView> createState() => _ShopViewState();
+  ConsumerState<ShopView> createState() => _ShopViewState();
 }
 
-class _ShopViewState extends State<ShopView> {
-  late ShopViewModel _vm;
-
+class _ShopViewState extends ConsumerState<ShopView> {
   bool _isGrid = false;
 
   @override
-  void initState() {
-    _vm = ShopViewModel();
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    final user = context.watch<AuthProvider>().user;
-    _vm.getProducts();
-
-    return ChangeNotifierProvider(
-        create: (context) => _vm,
-        child: Selector<ShopViewModel, List<Product>>(
-          selector: (context, vm) => vm.products,
-          builder: (context, products, child) {
-            return Scaffold(
-            appBar: AppBar(
-              backgroundColor: Colors.black54,
-              title: const Text('상점'),
-              actions: [
-                IconButton(
-                  icon: const Icon(Icons.grid_view),
-                  onPressed: () {
-                    setState(() {
-                      _isGrid = true;
-                    });
-                  },
-                ),
-                IconButton(
-                  icon: const Icon(Icons.list),
-                  onPressed: () {
-                    setState(() {
-                      _isGrid = false;
-                    });
-                  },
-                ),
-              ],
-            ),
-            backgroundColor: Colors.black38,
-            body: Stack(children: [
-              RefreshIndicator(
-                  color: Colors.cyan,
-                  backgroundColor: Colors.black54,
-                  onRefresh: () async {
-                    _vm.getProducts();
-                  },
-                  child: _isGrid
-                      ? _buildGridView(products)
-                      : _buildListView(products)),
-              Visibility(
-                  visible: user == null, child: _buildWarningMsg(context)),
-            ]),
-          );
-          },
-        )
-        );
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.black54,
+        title: const Text('상점'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.grid_view),
+            onPressed: () {
+              setState(() {
+                _isGrid = true;
+              });
+            },
+          ),
+          IconButton(
+            icon: const Icon(Icons.list),
+            onPressed: () {
+              setState(() {
+                _isGrid = false;
+              });
+            },
+          ),
+        ],
+      ),
+      backgroundColor: Colors.black38,
+      body: Stack(children: [
+        RefreshIndicator(
+            color: Colors.cyan,
+            backgroundColor: Colors.black54,
+            onRefresh: () async {
+              ref.read(shopVM.notifier).getProducts();
+            },
+            child:
+                _isGrid ? _buildGridView(ref.watch(shopVM).products) : _buildListView(ref.watch(shopVM).products)),
+        Visibility(visible: ref.watch(authProvider).user == null, child: _buildWarningMsg(context)),
+      ]),
+    );
   }
 
   GridView _buildGridView(List<Product> products) {

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shopper/data/models/shop/product.dart';
+import 'package:shopper/domain/providers/auth_provider.dart';
 import 'package:shopper/domain/services/shop/shop_service.dart';
 
 class ShopViewModel with ChangeNotifier {
@@ -27,3 +29,14 @@ class ShopViewModel with ChangeNotifier {
       });
   }
 }
+
+final shopVM = ChangeNotifierProvider.autoDispose<ShopViewModel>((ref) {
+  final vm = ShopViewModel();
+  vm.getProducts();
+
+  ref.listen(authProvider, (previous, next) {
+    vm.getProducts();
+  });
+  
+  return vm;
+});

@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shopper/data/models/auth/user.dart';
 import 'package:shopper/presentation/profile/viewmodels/profile_viewmodel.dart';
 import 'package:shopper/domain/providers/auth_provider.dart';
 
-class ProfileView extends StatefulWidget {
+class ProfileView extends ConsumerStatefulWidget {
   const ProfileView({super.key});
 
   @override
-  State<ProfileView> createState() => _ProfileViewState();
+  ConsumerState<ProfileView> createState() => _ProfileViewState();
 }
 
-class _ProfileViewState extends State<ProfileView> {
+class _ProfileViewState extends ConsumerState<ProfileView> {
   late ProfileViewModel _vm;
 
   @override
@@ -22,7 +22,7 @@ class _ProfileViewState extends State<ProfileView> {
 
   @override
   Widget build(BuildContext context) {
-    final user = context.watch<AuthProvider>().user;
+    final user = ref.watch(authProvider).user;
 
     return Padding(
       padding: const EdgeInsets.all(16.0),
@@ -121,7 +121,7 @@ class _ProfileViewState extends State<ProfileView> {
           if (user == null) {
             _vm.login();
           } else {
-            context.read<AuthProvider>().logout();
+            ref.read(authProvider.notifier).logout();
           }
         }
       )
